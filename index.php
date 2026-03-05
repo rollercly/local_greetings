@@ -54,11 +54,29 @@ $templatedata = ['usergreeting' => $usergreeting];
 
 echo $OUTPUT->render_from_template('local_greetings/greeting_message', $templatedata);
 
+
+$messages = $DB->get_records('local_greetings_messages');
+
 $messageform = new \local_greetings\form\message_form();
 $messageform->display();
+
+// foreach ($messages as $m) {
+//     echo '<p>' . $m->message . ', ' . $m->timecreated . '</p>';
+// }
+$templatedata = ['messages' => array_values($messages)];
+echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);
+
 if ($data = $messageform->get_data()) {
     $message = required_param('message', PARAM_TEXT);
-    echo $OUTPUT->heading($message, 4);
+
+    // AÑADIMOS EL MENSAJE PERSONALIZADO AL SALUDO POR DEFECTO.
+   if (!empty($message)) {
+        $record = new stdClass;
+        $record->message = $message;
+        $record->timecreated = time();
+
+        $DB->insert_record('local_greetings_messages', $record);
+    }
 }
 
 echo $OUTPUT->footer();
