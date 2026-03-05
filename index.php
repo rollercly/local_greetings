@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
-// This file is part of Moodle - https://moodle.org/
-=======
 // This file is part of Moodle - http://moodle.org/
->>>>>>> ed1fdde (Display greetings to user)
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,29 +12,41 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-<<<<<<< HEAD
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
-
-/**
- * Plugin strings are defined here.
- *
- * @package     local_greetings
- * @category    string
- * @copyright   2024 Jose Lorenzo <jos.lorenzo@outlook.com>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-=======
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English language pack for local_greetings
+ * TODO describe file index
  *
  * @package    local_greetings
- * @category   string
  * @copyright  2026 Jose Lorenzo <jose.lorenzo@rdt.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
->>>>>>> ed1fdde (Display greetings to user)
  */
 
-defined('MOODLE_INTERNAL') || die();
+require('../../config.php');
 
-$string['pluginname'] = 'Greetings';
+require_login();
+
+$url = new moodle_url('/local/greetings/index.php', []);
+$PAGE->set_url($url);
+
+$context = context_system::instance();
+$PAGE->set_context($context);
+
+$PAGE->set_pagelayout('standard');
+$PAGE->set_title(get_string('pluginname', 'local_greetings'));
+
+$PAGE->set_heading(get_string('pluginname', 'local_greetings'));
+
+echo $OUTPUT->header();
+
+if (isloggedin()) {
+    $usergreeting = 'Greetings, ' . fullname($USER);
+} else {
+    $usergreeting = 'Greetings, user';
+}
+
+$templatedata = ['usergreeting' => $usergreeting];
+
+echo $OUTPUT->render_from_template('local_greetings/greeting_message', $templatedata);
+
+echo $OUTPUT->footer();
