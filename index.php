@@ -25,6 +25,7 @@
 require('../../config.php');
 require_once($CFG->dirroot. '/local/greetings/lib.php');
 
+
 require_login();
 
 $url = new moodle_url('/local/greetings/index.php', []);

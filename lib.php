@@ -39,3 +39,21 @@ function local_greetings_get_greeting($user) {
 
     return get_string($langstr, 'local_greetings', fullname($user));
 }
+
+/**
+* Add link to index.php into navigation block.
+*
+* @param global_navigation $root Node representing the global navigation tree.
+*/
+function local_greetings_extend_navigation(global_navigation $root) {
+    $node = navigation_node::create(
+        get_string('greetings', 'local_greetings'),
+        new moodle_url('/local/greetings/index.php'),
+        navigation_node::TYPE_CUSTOM,
+        null,
+        null,
+        new pix_icon('t/message', '')
+    );
+
+    $root->add_node($node);
+}
