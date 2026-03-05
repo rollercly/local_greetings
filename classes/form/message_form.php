@@ -14,26 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * English language pack for local_greetings
- *
- * @package    local_greetings
- * @category   string
- * @copyright  2026 Jose Lorenzo <jose.lorenzo@rdt.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
+namespace local_greetings\form;
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Greetings';
+require_once($CFG->libdir . '/formslib.php');
 
-$string['greetingloggedinuser'] = 'Greetings, {$a}.';
-$string['greetinguser'] = 'Greetings, user.';
+/**
+ * Class message_form
+ *
+ * @package    local_greetings
+ * @copyright  2026 YOUR NAME <your@email.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class message_form extends \moodleform {
+    /**
+     * Define the form.
+     */
+    public function definition() {
+        $mform = $this->_form; // Don't forget the underscore!
 
-$string['greetinguserau'] = 'Hello, {$a}.';
-$string['greetinguseres'] = 'Hola, {$a}.';
-$string['greetinguserfj'] = 'Bula, {$a}.';
-$string['greetingusernz'] = 'Kia Ora, {$a}.';
+        $mform->addElement('textarea', 'message', get_string('yourmessage', 'local_greetings')); // Add elements to your form.
+        $mform->setType('message', PARAM_TEXT); // Set type of element.
 
-$string['greetings'] = 'Greetings';
-$string['yourmessage'] = 'Your message';
+        $submitlabel = get_string('submit');
+        $mform->addElement('submit', 'submitmessage', $submitlabel);
+    }
+}
