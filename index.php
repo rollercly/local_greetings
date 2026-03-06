@@ -74,6 +74,7 @@ $messages = $DB->get_records_sql($sql);
 $allowpost = has_capability('local/greetings:postmessages', $context);
 $deleteanypost = has_capability('local/greetings:deleteanymessage', $context);
 
+
 $messageform = new \local_greetings\form\message_form();
 
 $action = optional_param('action', '', PARAM_TEXT);
