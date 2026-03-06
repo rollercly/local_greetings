@@ -15,18 +15,42 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_greetings
+ * Capability definitions for Greetings
+ *
+ * Documentation: {@link https://moodledev.io/docs/apis/subsystems/access}
  *
  * @package    local_greetings
+ * @category   access
  * @copyright  2026 Jose Lorenzo <jose.lorenzo@rdt.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component    = 'local_greetings';
-$plugin->release      = '1.0';
-$plugin->version      = 2026030603;
-$plugin->requires     = 2024100700;
-$plugin->supported    = [405, 501];
-$plugin->maturity     = MATURITY_STABLE;
+$capabilities = [
+    'local/greetings:postmessages' => [
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'user' => CAP_ALLOW,
+        ]
+    ],
+    'local/greetings:viewmessages' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'user' => CAP_ALLOW,
+        ]
+    ],
+    
+    'local/greetings:deleteanymessage' => [
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ],
+    ],
+];

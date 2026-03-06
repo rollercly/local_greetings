@@ -71,13 +71,36 @@ $sql = "SELECT m.id, m.message, m.timecreated, m.userid {$userfieldssql->selects
 
 $messages = $DB->get_records_sql($sql);
 
-$messageform = new \local_greetings\form\message_form();
-$messageform->display();
+$allowpost = has_capability('local/greetings:postmessages', $context);
+$deleteanypost = has_capability('local/greetings:deleteanymessage', $context);
 
-// foreach ($messages as $m) {
-//     echo '<p>' . $m->message . ', ' . $m->timecreated . '</p>';
-// }
-$templatedata = ['messages' => array_values($messages)];
+$messageform = new \local_greetings\form\message_form();
+
+$action = optional_param('action', '', PARAM_TEXT);
+
+// SI SE HA SELECCIONADO ELIMINAR UN MENSAJE, LO ELIMINAMOS SI EL USUARIO TIENE PERMISO PARA ELLO.
+
+if ($action == 'del') {
+    require_capability('local/greetings:deleteanymessage', $context);
+    $id = required_param('id', PARAM_INT);
+
+    // if ($deleteanypost) {
+    //     $DB->delete_records('local_greetings_messages', ['id' => $id]);
+    // }
+    $DB->delete_records('local_greetings_messages', ['id' => $id]);
+}
+
+// SI EL USUARIO TIENE PERMISO PARA PUBLICAR MENSAJES, MOSTRAMOS EL FORMULARIO PARA
+if ($allowpost) {
+    $messageform->display();
+}
+
+
+$templatedata = [
+    'messages' => array_values($messages),
+    'candeleteany' => $deleteanypost,
+];
+
 echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);
 
 if ($data = $messageform->get_data()) {
