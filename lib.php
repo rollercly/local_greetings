@@ -46,14 +46,30 @@ function local_greetings_get_greeting($user) {
 * @param global_navigation $root Node representing the global navigation tree.
 */
 function local_greetings_extend_navigation(global_navigation $root) {
-    $node = navigation_node::create(
-        get_string('greetings', 'local_greetings'),
-        new moodle_url('/local/greetings/index.php'),
-        navigation_node::TYPE_CUSTOM,
-        null,
-        null,
-        new pix_icon('t/message', '')
-    );
-
-    $root->add_node($node);
+    if (! isguestuser()) {
+        
+        $node = navigation_node::create(
+            get_string('greetings', 'local_greetings'),
+            new moodle_url('/local/greetings/index.php'),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            null,
+            new pix_icon('t/message', '')
+            );
+            
+            $root->add_node($node);
+    }
 }
+
+// function local_greetings_extend_navigation_frontpage(global_navigation $root) {
+//     $node = navigation_node::create(
+//         get_string('greetings', 'local_greetings'),
+//         new moodle_url('/local/greetings/index.php'),
+//         navigation_node::TYPE_CUSTOM,
+//         null,
+//         null,
+//         new pix_icon('t/message', '')
+//     );
+
+//     $root->add_node($node);
+// }

@@ -27,6 +27,10 @@ require_once($CFG->dirroot . '/local/greetings/lib.php');
 
 
 require_login();
+// CONTROLAR SI ES INVITADO, EN ESE CASO NO MOSTRAR EL SALUDO PERSONALIZADO, SINO EL DE USUARIO ANÓNIMO. 
+if (isguestuser()) {
+    throw new moodle_exception('noguest');
+}
 
 $url = new moodle_url('/local/greetings/index.php', []);
 $PAGE->set_url($url);
