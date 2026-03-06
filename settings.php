@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_greetings
+ * TODO describe file settings
  *
  * @package    local_greetings
  * @copyright  2026 Jose Lorenzo <jose.lorenzo@rdt.com>
@@ -24,9 +24,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component    = 'local_greetings';
-$plugin->release      = '1.0';
-$plugin->version      = 2026030604;
-$plugin->requires     = 2024100700;
-$plugin->supported    = [405, 501];
-$plugin->maturity     = MATURITY_STABLE;
+if ($hassiteconfig) {
+    $settings = new admin_settingpage('local_greetings', get_string('pluginname', 'local_greetings'));
+    $ADMIN->add('localplugins', $settings);
+ 
+    if ($ADMIN->fulltree) {
+        require_once($CFG->dirroot . '/local/greetings/lib.php');
+ 
+        $settings->add(new admin_setting_configtext(
+            'local_greetings/messagecardbgcolor',
+            get_string('messagecardbgcolor', 'local_greetings'),
+            get_string('messagecardbgcolordesc', 'local_greetings'),
+            '#FFFFFF',
+        ));
+    }
+}

@@ -54,7 +54,9 @@ if (isloggedin()) {
     $usergreeting = get_string('greetinguser', 'local_greetings');
 }
 
-$templatedata = ['usergreeting' => $usergreeting];
+$templatedata = [
+    'usergreeting' => $usergreeting,
+];
 
 echo $OUTPUT->render_from_template('local_greetings/greeting_message', $templatedata);
 
@@ -95,9 +97,11 @@ if ($allowpost) {
 }
 
 
+$cardbackgroundcolor = get_config('local_greetings', 'messagecardbgcolor');
 $templatedata = [
     'messages' => array_values($messages),
     'candeleteany' => $deleteanypost,
+    'cardbackgroundcolor' => $cardbackgroundcolor,
 ];
 
 echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);
