@@ -82,13 +82,11 @@ $action = optional_param('action', '', PARAM_TEXT);
 // SI SE HA SELECCIONADO ELIMINAR UN MENSAJE, LO ELIMINAMOS SI EL USUARIO TIENE PERMISO PARA ELLO.
 
 if ($action == 'del') {
+    require_sesskey();
     require_capability('local/greetings:deleteanymessage', $context);
     $id = required_param('id', PARAM_INT);
-
-    // if ($deleteanypost) {
-    //     $DB->delete_records('local_greetings_messages', ['id' => $id]);
-    // }
     $DB->delete_records('local_greetings_messages', ['id' => $id]);
+    redirect($PAGE->url);
 }
 
 // SI EL USUARIO TIENE PERMISO PARA PUBLICAR MENSAJES, MOSTRAMOS EL FORMULARIO PARA
@@ -105,7 +103,7 @@ $templatedata = [
 echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);
 
 if ($data = $messageform->get_data()) {
-    $message = required_param('message', PARAM_TEXT);
+    $message = required_param('message', PARAM_TEXT   );
 
     // AÑADIMOS EL MENSAJE PERSONALIZADO AL SALUDO POR DEFECTO.
    if (!empty($message)) {
